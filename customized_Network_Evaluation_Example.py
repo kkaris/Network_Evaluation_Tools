@@ -59,13 +59,13 @@ network_perf_gain.name = 'Test Network'
 network_perf_gain.to_csv('./Data/Network_Performance_Gain.csv', sep='\t')
 
 # Rank network on average performance across gene sets vs performance on same gene sets in previous network set
-all_network_performance = pd.read_csv('./Data/Network_Performance.csv', index_col=0)
+all_network_performance = pd.read_csv('./Data/Network_Performance.csv', index_col=0, sep='\t')
 all_network_performance_filt = pd.concat([network_performance, all_network_performance.ix[network_performance.index]], axis=1)
 network_performance_rank_table = all_network_performance_filt.rank(axis=1, ascending=False)
 network_performance_rankings = network_performance_rank_table['Test Network']
 
 # Rank network on average performance gain across gene sets vs performance gain on same gene sets in previous network set
-all_network_perf_gain = pd.read_csv('./Data/Network_Performance_Gain.csv', index_col=0)
+all_network_perf_gain = pd.read_csv('./Data/Network_Performance_Gain.csv', index_col=0, sep='\t')
 all_network_perf_gain_filt = pd.concat([network_perf_gain, all_network_perf_gain.ix[network_perf_gain.index]], axis=1)
 network_perf_gain_rank_table = all_network_performance_filt.rank(axis=1, ascending=False)
 network_perf_gain_rankings = network_perf_gain_rank_table['Test Network']
