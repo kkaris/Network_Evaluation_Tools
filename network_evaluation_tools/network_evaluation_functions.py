@@ -41,7 +41,7 @@ def calculate_p(network, nodesets, m=-0.18887257, b=0.64897403):
     for nodeset in nodesets:
         nodesets_coverage = len([node for node in nodesets[nodeset] if node in network_nodes])
         nodesets_p[nodeset] = round(m*np.log10(nodesets_coverage)+b, 4)
-    pdb.set_trace()
+#    pdb.set_trace()
     return nodesets_p
 
 # Construct influence matrix of each network node propagated across network to use as kernel in AUPRC analysis
