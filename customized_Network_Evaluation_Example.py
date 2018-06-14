@@ -12,7 +12,7 @@ import pandas as pd
 import numpy as np
 
 input_network_file = './interaction_datasets/head3000_stripped_HUMAN_INTERACTOME.sif'
-gene_set_file = './Data/InBioMap_subnetwork.txt'
+gene_set_file = './Data/DisGeNET_genesets.txt'
 
 # Load network (We choose a smaller network here for the example's sake)
 network = dit.load_network_file(input_network_file, verbose=True)
