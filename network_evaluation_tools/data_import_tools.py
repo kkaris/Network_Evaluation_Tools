@@ -27,7 +27,8 @@ def filter_weighted_network_sif(network_file_path, nodeA_col=0, nodeB_col=1, sco
 # Can set delimiter, but default delimiter is tab
 # Only will read edges as first two columns, all other columns will be ignored
 def load_network_file(network_file_path, delimiter='\t', verbose=False):
-    network = nx.read_edgelist(network_file_path, delimiter=delimiter, data=False)
+    # network = nx.read_edgelist(network_file_path, delimiter=delimiter, data=False)
+    network = nx.read_edgelist(network_file_path, delimiter=None, data=False)  #K with del=None all whitespace is matched
     if verbose:
         print 'Network File Loaded:', network_file_path
     return network
