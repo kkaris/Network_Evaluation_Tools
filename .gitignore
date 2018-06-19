@@ -1,6 +1,7 @@
 # user defined
 .idea/
 .swp
+Data/indra_raw/
 Data/Network_Performance_3k.csv
 Data/Network_Performance_Gain_3k.csv
 Data/Network_Performance_Gain_indra_head25k.csv
