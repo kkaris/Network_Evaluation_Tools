@@ -1,0 +1,44 @@
+HUMAN INTERACTOME
+
+3000 edges; estimated time: < 1 hr
+
+Nodes:	2397
+Edges:	3000
+Avg Node Degree:	2.5031289111389237
+Edge Density:	0.001044711565583858
+Avg Network Performance Rank:	1.5056053811659194
+Avg Network Performance Rank, Rank:	2
+Avg Network Performance Gain Rank:	1.5056053811659194
+Avg Network Performance Gain Rank, Rank:	2
+
+
+30 000 edges; estimated time: ~3 hrs
+
+Nodes:	10083
+Edges:	30000
+Avg Node Degree:	5.950609937518595
+Edge Density:	0.0005902211800752426
+Avg Network Performance Rank:	1.531390134529148
+Avg Network Performance Rank, Rank:	2
+Avg Network Performance Gain Rank:	1.531390134529148
+Avg Network Performance Gain Rank, Rank:	2
+
+
+------------------------------------------
+
+
+INDRA grounded human genome
+
+25k first edges
+Nodes:	3748
+Edges:	9444
+Avg Node Degree:	5.03948772678762
+Edge Density:	0.001344939345286261
+Avg Network Performance Rank:	1.5145739910313902
+Avg Network Performance Rank, Rank:	2
+Avg Network Performance Gain Rank:	1.5145739910313902
+Avg Network Performance Gain Rank, Rank:	2
+
+
+FULL:
+

@@ -1,0 +1,21 @@
+NOTES on Network Evaluation Tools data sets
+
+
+Gene sets:
+- DisGeNET Gene Sets (DisGeNET_genesets.txt)
+- Oncogenic Component Gene Sets (Oncogenic_Components_genesets.txt)
+Two tab separated files, each line containing a gene set from either DisGeNET or the Oncogenic Component collection. The first column of each file is the name of the gene set followed by the list of genes associated with that given gene set on the same line.
+
+
+Network performance scores (AUPRCs) on the gene sets:
+- DisGeNET performance (DisGeNET_genesets_AUPRCs.csv)
+- Oncogenic Component performance (Oncogenic_genesets_AUPRCs.csv)
+Two csv files containing the raw Z-normalized AUPRC (=Area Under Precision-Recall Curve) scores (i.e. network performance scores) of each network analyzed on each gene set analyzed from DisGeNET or the Oncogenic Component gene set collection.
+
+
+Network performance effect sizes - performance gain
+- DisGeNET effect size metric (DisGeNET_genesets_Effect_Size.csv)
+- Oncogenic Component effect size metric (Oncogenic_genesets_Effect_Size.csv)
+Two csv files containing the relative performance gain of each network's AUPRC score over the median null AUPRC score for each gene set analyzed from DisGeNET or the Oncogenic Component gene set collection.
+"To determine the network rankings by an effect size metric, we defined the performance gain as the difference between the AUPRC of a given network and the median AUPRC of its null networks divided by the median AUPRC of its null networks"
+Performance gain = (AUPRC - median(AUPRC_null)) / median(AUPRC_null)

@@ -1,3 +1,14 @@
+# user defined
+.idea/
+.swp
+Data/Network_Performance_3k.csv
+Data/Network_Performance_Gain_3k.csv
+Data/Network_Performance_Gain_indra_head25k.csv
+Data/Network_Performance_indra_head25k.csv
+gene_interaction_datasets/*
+gene_interations_indra/*
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
