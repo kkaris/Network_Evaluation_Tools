@@ -18,12 +18,13 @@ def main(args):
     gene_set_file = args.diseasefile
     outname = args.outname
     n_cores = args.cores
+    is_verbose = args.verbose
     large = True
     if args.size == 's':
         large = False
 
     # Load network (We choose a smaller network here for the example's sake)
-    network = dit.load_network_file(input_network_file, verbose=True)
+    network = dit.load_network_file(input_network_file, verbose=is_verbose)
 
     # Load gene sets for analysis
     genesets = dit.load_node_sets(gene_set_file)
@@ -36,25 +37,25 @@ def main(args):
     # print alpha
 
     # Calculate network kernel for propagation
-    kernel = nef.construct_prop_kernel(network, alpha=alpha, verbose=True)
+    kernel = nef.construct_prop_kernel(network, alpha=alpha, verbose=is_verbose)
 
     # Might want to tweak values here to speed up calculation
     # Calculate the AUPRC values for each gene set
     if large:
-        AUPRC_values = nef.large_network_AUPRC_wrapper(kernel, genesets, genesets_p, n=30, cores=n_cores, verbose=True)
+        AUPRC_values = nef.large_network_AUPRC_wrapper(kernel, genesets, genesets_p, n=30, cores=n_cores, verbose=is_verbose)
     else:
-        AUPRC_values = nef.small_network_AUPRC_wrapper(kernel, genesets, genesets_p, n=30, cores=n_cores, verbose=True)
+        AUPRC_values = nef.small_network_AUPRC_wrapper(kernel, genesets, genesets_p, n=30, cores=n_cores, verbose=is_verbose)
 
     # Construct null networks and calculate the AUPRC of the gene sets of the null networks
     # We can use the AUPRC wrapper function for this
     null_AUPRCs = []
     for i in range(10):
-        shuffNet = nef.shuffle_network(network, max_tries_n=10, verbose=True)
-        shuffNet_kernel = nef.construct_prop_kernel(shuffNet, alpha=alpha, verbose=False)
+        shuffNet = nef.shuffle_network(network, max_tries_n=10, verbose=is_verbose)
+        shuffNet_kernel = nef.construct_prop_kernel(shuffNet, alpha=alpha, verbose=is_verbose)
         if large:
-            shuffNet_AUPRCs = nef.large_network_AUPRC_wrapper(shuffNet_kernel, genesets, genesets_p, n=30, cores=n_cores, verbose=False)
+            shuffNet_AUPRCs = nef.large_network_AUPRC_wrapper(shuffNet_kernel, genesets, genesets_p, n=30, cores=n_cores, verbose=is_verbose)
         else:
-            shuffNet_AUPRCs = nef.small_network_AUPRC_wrapper(shuffNet_kernel, genesets, genesets_p, n=30, cores=n_cores, verbose=False)
+            shuffNet_AUPRCs = nef.small_network_AUPRC_wrapper(shuffNet_kernel, genesets, genesets_p, n=30, cores=n_cores, verbose=is_verbose)
         null_AUPRCs.append(shuffNet_AUPRCs)
         print 'shuffNet', repr(i+1), 'AUPRCs calculated'
 
@@ -63,12 +64,12 @@ def main(args):
     null_AUPRCs_table.columns = ['shuffNet'+repr(i+1) for i in range(len(null_AUPRCs))]
 
     # Calculate performance metric of gene sets
-    network_performance = nef.calculate_network_performance_score(AUPRC_values, null_AUPRCs_table, verbose=True)
+    network_performance = nef.calculate_network_performance_score(AUPRC_values, null_AUPRCs_table, verbose=is_verbose)
     network_performance.name = 'Test Network'
     network_performance.to_csv(outname+'.csv', sep='\t')
 
     # Calculate network performance gain over median null AUPRC
-    network_perf_gain = nef.calculate_network_performance_gain(AUPRC_values, null_AUPRCs_table, verbose=True)
+    network_perf_gain = nef.calculate_network_performance_gain(AUPRC_values, null_AUPRCs_table, verbose=is_verbose)
     network_perf_gain.name = 'Test Network'
     network_perf_gain.to_csv(outname+'_Gain.csv', sep='\t')
 
@@ -110,10 +111,11 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--infile', required=True, help='Gene interaction data set in sif file format.')
     parser.add_argument('-s', '--diseasefile', required=True,
                         help='Tab separated data file with disease name in first column and disease related genes in the rest of the columns.')
-    parser.add_argument('-c', '--cores', help='Number of cores to use. (Default: n=4)')
+    parser.add_argument('-c', '--cores', type=int, help='Number of cores to use. (Default: n=4)')
     parser.add_argument('-n', '--size', help='Size of network. s (small): size <= 250k; l (large): size >= 250k (Default: small)')
     parser.add_argument('-o', '--outname',
                         help='File name for output. Default: Network_Performance/Network_Performance_Gain.')
+    parser.add_argument('-v', '--verbose', help='More cowbell! (Default: True)', action='store_true')
     args = parser.parse_args()
     if not args.outname:
         args.outname = 'Network_Performance'
