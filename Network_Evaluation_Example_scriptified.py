@@ -63,33 +63,33 @@ def main(args):
     null_AUPRCs_table = pd.concat(null_AUPRCs, axis=1)
     null_AUPRCs_table.columns = ['shuffNet'+repr(i+1) for i in range(len(null_AUPRCs))]
 
-    # Calculate performance metric of gene sets
+    # Calculate performance metric of gene sets; This is the Z-score
     network_performance = nef.calculate_network_performance_score(AUPRC_values, null_AUPRCs_table, verbose=is_verbose)
     network_performance.name = 'Test Network'
-    network_performance.to_csv(outname+'.csv', sep='\t')
+    network_performance.to_csv(outname+'_performance_score.csv', sep='\t')
 
-    # Calculate network performance gain over median null AUPRC
+    # Calculate network performance gain over median null AUPRC;
     network_perf_gain = nef.calculate_network_performance_gain(AUPRC_values, null_AUPRCs_table, verbose=is_verbose)
     network_perf_gain.name = 'Test Network'
-    network_perf_gain.to_csv(outname+'_Gain.csv', sep='\t')
+    network_perf_gain.to_csv(outname+'_performance_gain.csv', sep='\t')
 
-    # Rank network on average performance across gene sets vs performance on same gene sets in previous network set
-    all_network_performance = pd.read_csv(outname+'.csv', index_col=0, sep='\t')
-    all_network_performance_filt = pd.concat([network_performance, all_network_performance.ix[network_performance.index]], axis=1)
-    network_performance_rank_table = all_network_performance_filt.rank(axis=1, ascending=False)
-    network_performance_rankings = network_performance_rank_table['Test Network']
-
-    # Rank network on average performance gain across gene sets vs performance gain on same gene sets in previous network set
-    all_network_perf_gain = pd.read_csv(outname+'_Gain.csv', index_col=0, sep='\t')
-    all_network_perf_gain_filt = pd.concat([network_perf_gain, all_network_perf_gain.ix[network_perf_gain.index]], axis=1)
-    network_perf_gain_rank_table = all_network_performance_filt.rank(axis=1, ascending=False)
-    network_perf_gain_rankings = network_perf_gain_rank_table['Test Network']
-
-    # Network Performance
-    network_performance_metric_ranks = pd.concat([network_performance, network_performance_rankings, network_perf_gain, network_perf_gain_rankings], axis=1)
-    network_performance_metric_ranks.columns = ['Network Performance', 'Network Performance Rank', 'Network Performance Gain', 'Network Performance Gain Rank']
-    network_performance_metric_ranks.sort_values(by=['Network Performance Rank', 'Network Performance', 'Network Performance Gain Rank', 'Network Performance Gain'],
-                                                 ascending=[True, False, True, False])
+    # # Rank network on average performance across gene sets vs performance on same gene sets in previous network set
+    # all_network_performance = pd.read_csv(outname+'.csv', index_col=0, sep='\t')
+    # all_network_performance_filt = pd.concat([network_performance, all_network_performance.ix[network_performance.index]], axis=1)
+    # network_performance_rank_table = all_network_performance_filt.rank(axis=1, ascending=False)
+    # network_performance_rankings = network_performance_rank_table['Test Network']
+    #
+    # # Rank network on average performance gain across gene sets vs performance gain on same gene sets in previous network set
+    # all_network_perf_gain = pd.read_csv(outname+'_Gain.csv', index_col=0, sep='\t')
+    # all_network_perf_gain_filt = pd.concat([network_perf_gain, all_network_perf_gain.ix[network_perf_gain.index]], axis=1)
+    # network_perf_gain_rank_table = all_network_perf_gain_filt.rank(axis=1, ascending=False)
+    # network_perf_gain_rankings = network_perf_gain_rank_table['Test Network']
+    #
+    # # Network Performance
+    # network_performance_metric_ranks = pd.concat([network_performance, network_performance_rankings, network_perf_gain, network_perf_gain_rankings], axis=1)
+    # network_performance_metric_ranks.columns = ['Network Performance', 'Network Performance Rank', 'Network Performance Gain', 'Network Performance Gain Rank']
+    # network_performance_metric_ranks.sort_values(by=['Network Performance Rank', 'Network Performance', 'Network Performance Gain Rank', 'Network Performance Gain'],
+    #                                              ascending=[True, False, True, False])
 
     # Construct network summary table
     network_summary = {}
@@ -97,14 +97,14 @@ def main(args):
     network_summary['Edges'] = int(len(network.edges()))
     network_summary['Avg Node Degree'] = np.mean(dict(network.degree()).values())
     network_summary['Edge Density'] = 2*network_summary['Edges'] / float((network_summary['Nodes']*(network_summary['Nodes']-1)))
-    network_summary['Avg Network Performance Rank'] = network_performance_rankings.mean()
-    network_summary['Avg Network Performance Rank, Rank'] = int(network_performance_rank_table.mean().rank().ix['Test Network'])
-    network_summary['Avg Network Performance Gain Rank'] = network_perf_gain_rankings.mean()
-    network_summary['Avg Network Performance Gain Rank, Rank'] = int(network_perf_gain_rank_table.mean().rank().ix['Test Network'])
+    # network_summary['Avg Network Performance Rank'] = network_performance_rankings.mean()
+    # network_summary['Avg Network Performance Rank, Rank'] = int(network_performance_rank_table.mean().rank().ix['Test Network'])
+    # network_summary['Avg Network Performance Gain Rank'] = network_perf_gain_rankings.mean()
+    # network_summary['Avg Network Performance Gain Rank, Rank'] = int(network_perf_gain_rank_table.mean().rank().ix['Test Network'])
     with open(outname+'_summary', 'w') as f:
-        for item in ['Nodes', 'Edges', 'Avg Node Degree', 'Edge Density', 'Avg Network Performance Rank', 'Avg Network Performance Rank, Rank',
-                     'Avg Network Performance Gain Rank', 'Avg Network Performance Gain Rank, Rank']:
-            f.write(item+':\t'+repr(network_summary[item]))
+        for item in ['Nodes', 'Edges', 'Avg Node Degree', 'Edge Density']:
+            f.write(item+':\t'+repr(network_summary[item])+'\n')
+
 
 if __name__ == '__main__':
     parser = ap.ArgumentParser()

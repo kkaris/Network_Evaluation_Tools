@@ -180,4 +180,4 @@ if __name__ == "__main__":
         # Calculate network performance gain over median null AUPRC if AUPRC performance gain save path is given
         if args.performance_gain_save_path is not None:
             network_perf_gain = nef.calculate_network_performance_gain(actual_AUPRC_values, null_AUPRCs_table, verbose=args.verbose)            
-            network_perf_gain.to_csv(args.performance_save_path)
+            network_perf_gain.to_csv(args.performance_gain_save_path)
